@@ -21,6 +21,7 @@ export default {
         REQUEST_RESPONSE_LAYOUT: 'Restfox-RequestResponseLayout',
         THEME: 'Restfox-Theme',
         GITHUB_STAR_COUNT: 'Restfox-GithubStarCount',
+        HIDE_TAB_BAR: 'Restfox-HideTabBar',
         DISABLE_PAGE_VIEW_ANALYTICS_TRACKING: 'Restfox-DisablePageViewAnalyticsTracking',
         DISABLE_SSL_VERIFICATION: 'Restfox-DisableSSLVerification',
         DISABLE_IFRAME_SANDBOX: 'Restfox-DisableIframeSandbox',

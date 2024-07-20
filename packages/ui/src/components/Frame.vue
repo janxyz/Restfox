@@ -11,6 +11,7 @@ import constants from '../constants'
 
 const store = useStore()
 const activeTab = computed(() => store.state.activeTab)
+const hideTabBar = ref(false)
 const requestResponseLayoutTopBottom = computed(() => store.state.requestResponseLayout === 'top-bottom')
 const detachedTabs = computed({
     get() {
@@ -78,6 +79,14 @@ onMounted(() => {
         store.state.requestResponseLayout = savedRequestResponseLayout
     }
 
+    const savedHideTabBar = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR)
+    if (savedHideTabBar) {
+        hideTabBar.value = savedHideTabBar === 'true'
+    }
+    window.addEventListener(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR, (event) => {
+        hideTabBar.value = event.detail.hideTabBar
+    })
+
     resizeObserverSidebar = new ResizeObserver(onSidebarResize)
     resizeObserverSidebar.observe(sidebar)
 })
@@ -93,7 +102,7 @@ onBeforeUnmount(() => {
             <NavBar nav="collection" />
         </header>
 
-        <section class="tab-bar" v-if="activeTab">
+        <section class="tab-bar" v-if="activeTab && !hideTabBar">
             <TabBar />
         </section>
 

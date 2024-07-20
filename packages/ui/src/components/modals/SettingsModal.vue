@@ -18,6 +18,13 @@
                 </div>
             </div>
             <div style="padding-top: 1rem"></div>
+            <div>
+                <label style="display: flex;">
+                    <input type="checkbox" v-model="hideTabBar"> <div style="margin-left: 0.5rem;">Hide tab bar</div> <div style="margin-left: 0.5rem;"></div>
+                </label>
+                <div style="margin-left: 1.3rem; margin-top: 0.3rem;">Don't show tabs with opened requests.</div>
+            </div>
+            <div style="padding-top: 1rem"></div>
             <div style="padding-top: 1rem"></div>
             <div>
                 <label style="display: flex;">
@@ -82,6 +89,7 @@ export default {
             sidebarWidth: null,
             requestPanelRatio: null,
             responsePanelRatio: null,
+            hideTabBar: false,
             disablePageViewAnalyticsTracking: false,
             disableSSLVerification: false,
             electronSwitchToChromiumFetch: false,
@@ -112,6 +120,15 @@ export default {
         showModal() {
             this.fetchSavedSettings()
         },
+        hideTabBar() {
+            localStorage.setItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR, this.hideTabBar)
+            window.dispatchEvent(new CustomEvent(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR, {
+                detail: {
+                    hideTabBar: this.hideTabBar
+                }
+            }))
+
+        },
         disablePageViewAnalyticsTracking() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING, this.disablePageViewAnalyticsTracking)
         },
@@ -141,6 +158,9 @@ export default {
         resetLayout() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.REQUEST_RESPONSE_LAYOUT)
         },
+        resetHideTabBar() {
+            localStorage.removeItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR)
+        },
         resetDisablePageViewAnalyticsTracking() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING)
         },
@@ -169,6 +189,7 @@ export default {
 
             this.resetWidths()
             this.resetLayout()
+            this.resetHideTabBar()
             this.resetDisablePageViewAnalyticsTracking()
             this.resetDisableSSLVerification()
             this.resetElectronSwitchToChromiumFetch()
@@ -181,6 +202,7 @@ export default {
             const savedSidebarWidth = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SIDEBAR_WIDTH)
             const savedRequestPanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.REQUEST_PANEL_RATIO)
             const savedResponsePanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.RESPONSE_PANEL_RATIO)
+            const savedHideTabBar = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR)
             const savedDisablePageViewAnalyticsTracking = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING)
             const savedDisableSSLVerification = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_SSL_VERIFICATION)
             const savedElectronSwitchToChromiumFetch = localStorage.getItem(constants.LOCAL_STORAGE_KEY.ELECTRON_SWITCH_TO_CHROMIUM_FETCH)
@@ -197,6 +219,14 @@ export default {
 
             if(savedResponsePanelRatio) {
                 this.responsePanelRatio = savedResponsePanelRatio
+            }
+
+            if (savedHideTabBar) {
+                try {
+                    this.hideTabBar = JSON.parse(savedHideTabBar)
+                } catch (e) {
+                    this.hideTabBar = false
+                }
             }
 
             if(savedDisablePageViewAnalyticsTracking) {
