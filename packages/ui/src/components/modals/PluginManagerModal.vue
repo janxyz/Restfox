@@ -9,7 +9,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Status</th>
+                        <th>Enabled</th>
                         <th>Name</th>
                         <th>Date Added</th>
                         <th>Date Updated</th>
@@ -19,10 +19,7 @@
                 <tbody>
                     <tr v-for="plugin in plugins">
                         <td>
-                            <select :value="plugin.enabled ? '1' : '0'" @change="updatePluginStatus(plugin._id, $event.target.value)" class="full-width-input slim">
-                                <option value="1">Enabled</option>
-                                <option value="0">Disabled</option>
-                            </select>
+                            <input type="checkbox" :checked="plugin.enabled" @change="updatePluginStatus(plugin._id, $event.target.checked)" class="input slim">
                         </td>
                         <td>{{ plugin.name }}</td>
                         <td>{{ dateFormat(plugin.createdAt) }}</td>
@@ -46,7 +43,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Status</th>
+                            <th>Enabled</th>
                             <th>Name</th>
                             <th>Date Added</th>
                             <th>Date Updated</th>
@@ -56,10 +53,7 @@
                     <tbody>
                         <tr v-for="plugin in currentWorkspacePlugins">
                             <td>
-                                <select :value="plugin.enabled ? '1' : '0'" @change="updatePluginStatus(plugin._id, $event.target.value)" class="full-width-input slim">
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
-                                </select>
+                                <input type="checkbox" :checked="plugin.enabled" @change="updatePluginStatus(plugin._id, $event.target.checked)" class="input slim">
                             </td>
                             <td>{{ plugin.name }}</td>
                             <td>{{ dateFormat(plugin.createdAt) }}</td>
@@ -187,7 +181,7 @@ export default {
             }
         },
         updatePluginStatus(pluginId, enabled) {
-            this.$store.commit('updatePluginStatus', { _id: pluginId, enabled: enabled === '1' ? true : false })
+            this.$store.commit('updatePluginStatus', { _id: pluginId, enabled: enabled })
         },
         async deletePlugin(pluginId) {
             if(await window.createConfirm('Are you sure?')) {
