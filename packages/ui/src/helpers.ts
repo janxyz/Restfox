@@ -361,7 +361,12 @@ export async function createRequestData(
             }
         }
 
-        if(request.body.mimeType === 'text/plain' || request.body.mimeType === 'application/json' || request.body.mimeType === 'application/graphql') {
+        if (
+            request.body.mimeType === 'text/plain' ||
+            request.body.mimeType === 'application/json' ||
+            request.body.mimeType === 'application/graphql' ||
+            request.body.mimeType === constants.MIME_TYPE.XML
+        ) {
             body = substituteEnvironmentVariables(environment, request.body.text ?? '')
         }
 

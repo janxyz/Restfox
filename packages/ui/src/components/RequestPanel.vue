@@ -166,6 +166,19 @@
                 <div class="request-panel-body-footer" v-if="activeTab.body.mimeType === 'application/json'">
                     <button class="button" @click="beautifyJSON">Beautify JSON</button>
                 </div>
+                <div v-if="activeTab.body.mimeType === constants.MIME_TYPE.XML" class="oy-a">
+                    <CodeMirrorEditor
+                        v-model="activeTab.body.text"
+                        lang="xml"
+                        :env-variables="collectionItemEnvironmentResolved"
+                        class="code-editor"
+                        :key="'code-mirror-editor-' + activeTab._id + '-' + refreshCodeMirrorEditors"
+                        ref="xmlEditor"
+                    ></CodeMirrorEditor>
+                </div>
+                <div class="request-panel-body-footer" v-if="activeTab.body.mimeType === constants.MIME_TYPE.XML">
+                    <button class="button" @click="beautifyXML">Beautify XML</button>
+                </div>
                 <div style="display: grid; grid-template-rows: 1fr 130px auto; height: 100%; overflow: auto;" v-if="activeTab.body.mimeType === 'application/graphql'">
                     <div class="oy-a" style="min-height: 130px;">
                         <CodeMirrorEditor
@@ -368,6 +381,7 @@ import ReferencesButton from '@/components/ReferencesButton.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
 import { emitter } from '@/event-bus'
 import { jsonPrettify } from '../utils/prettify-json'
+import { xmlPrettify } from '../utils/prettify-xml'
 import { convertCurlCommandToRestfoxCollection, debounce, substituteEnvironmentVariables } from '@/helpers'
 import * as queryParamsSync from '@/utils/query-params-sync'
 import constants from '@/constants'
@@ -401,6 +415,7 @@ export default {
     },
     data() {
         return {
+            constants: constants,
             requestPanelTabs: [
                 {
                     name: 'Body'
@@ -482,6 +497,11 @@ export default {
                     'type': 'option',
                     'label': 'JSON',
                     'value': 'application/json',
+                },
+                {
+                    'type': 'option',
+                    'label': 'XML',
+                    'value': constants.MIME_TYPE.XML,
                 },
                 {
                     'type': 'option',
@@ -643,6 +663,12 @@ export default {
             try {
                 const formattedJSON = jsonPrettify(this.activeTab.body.text, '    ')
                 this.$refs.jsonEditor.setValue(formattedJSON)
+            } catch {} // catch all json parsing errors and ignore them
+        },
+        beautifyXML() {
+            try {
+                const formattedXML = xmlPrettify(this.activeTab.body.text)
+                this.$refs.xmlEditor.setValue(formattedXML)
             } catch {} // catch all json parsing errors and ignore them
         },
         beautifyGraphQL() {
@@ -808,6 +834,10 @@ export default {
 
             if(newMimeType === constants.MIME_TYPE.JSON || newMimeType === constants.MIME_TYPE.GRAPHQL) {
                 mimeType = constants.MIME_TYPE.JSON
+            }
+
+            if(newMimeType === constants.MIME_TYPE.XML) {
+                mimeType = constants.MIME_TYPE.XML
             }
 
             if(newMimeType === constants.MIME_TYPE.OCTET_STREAM) {

@@ -6,6 +6,7 @@
 import { EditorView, highlightActiveLine, keymap, highlightSpecialChars, lineNumbers, highlightActiveLineGutter, drawSelection } from '@codemirror/view'
 import { EditorState, StateEffect } from '@codemirror/state'
 import { json } from '@codemirror/lang-json'
+import { xml } from '@codemirror/lang-xml'
 import { javascript, javascriptLanguage } from '@codemirror/lang-javascript'
 import { graphql } from 'cm6-graphql'
 import { closeBrackets, completeFromList, autocompletion } from '@codemirror/autocomplete'
@@ -42,6 +43,11 @@ function getLanguageFuncAndHighlightStyle(language) {
 
     if(language === 'json') {
         languageFunc = json()
+        highlightStyle = codeMirrorSyntaxHighlighting()
+    }
+
+    if (language === 'xml') {
+        languageFunc = xml()
         highlightStyle = codeMirrorSyntaxHighlighting()
     }
 
