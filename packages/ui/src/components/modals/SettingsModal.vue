@@ -18,6 +18,17 @@
                 </div>
             </div>
             <div style="padding-top: 1rem"></div>
+            <div style="display: flex; gap: 1rem;">
+                <div>
+                    <div style="margin-bottom: var(--label-margin-bottom);">User interface font size</div>
+                    <input min="2" max="100" type="number" v-model.number="fontSizeUi" class="full-width-input">
+                </div>
+                <div>
+                    <div style="margin-bottom: var(--label-margin-bottom);">Editor font size</div>
+                    <input min="2" max="100" type="number" v-model.number="fontSizeEditor" class="full-width-input">
+                </div>
+            </div>
+            <div style="padding-top: 1rem"></div>
             <div>
                 <label style="display: flex;">
                     <input type="checkbox" v-model="hideTabBar"> <div style="margin-left: 0.5rem;">Hide tab bar</div> <div style="margin-left: 0.5rem;"></div>
@@ -89,6 +100,8 @@ export default {
             sidebarWidth: null,
             requestPanelRatio: null,
             responsePanelRatio: null,
+            fontSizeUi: 13,
+            fontSizeEditor: 13,
             hideTabBar: false,
             disablePageViewAnalyticsTracking: false,
             disableSSLVerification: false,
@@ -119,6 +132,22 @@ export default {
     watch: {
         showModal() {
             this.fetchSavedSettings()
+        },
+        fontSizeUi() {
+            localStorage.setItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI, this.fontSizeUi)
+            window.dispatchEvent(new CustomEvent(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI, {
+                detail: {
+                    fontSizeUi: this.fontSizeUi
+                }
+            }))
+        },
+        fontSizeEditor() {
+            localStorage.setItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR, this.fontSizeEditor)
+            window.dispatchEvent(new CustomEvent(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR, {
+                detail: {
+                    fontSizeEditor: this.fontSizeEditor
+                }
+            }))
         },
         hideTabBar() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR, this.hideTabBar)
@@ -158,6 +187,10 @@ export default {
         resetLayout() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.REQUEST_RESPONSE_LAYOUT)
         },
+        resetFontSize() {
+            localStorage.removeItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI)
+            localStorage.removeItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR)
+        },
         resetHideTabBar() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR)
         },
@@ -189,6 +222,7 @@ export default {
 
             this.resetWidths()
             this.resetLayout()
+            this.resetFontSize()
             this.resetHideTabBar()
             this.resetDisablePageViewAnalyticsTracking()
             this.resetDisableSSLVerification()
@@ -202,6 +236,8 @@ export default {
             const savedSidebarWidth = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SIDEBAR_WIDTH)
             const savedRequestPanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.REQUEST_PANEL_RATIO)
             const savedResponsePanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.RESPONSE_PANEL_RATIO)
+            const savedFontSizeUi = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI)
+            const savedFontSizeEditor = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR)
             const savedHideTabBar = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_TAB_BAR)
             const savedDisablePageViewAnalyticsTracking = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING)
             const savedDisableSSLVerification = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_SSL_VERIFICATION)
@@ -219,6 +255,14 @@ export default {
 
             if(savedResponsePanelRatio) {
                 this.responsePanelRatio = savedResponsePanelRatio
+            }
+
+            if (savedFontSizeUi) {
+                this.fontSizeUi = parseInt(savedFontSizeUi)
+            }
+
+            if (savedFontSizeEditor) {
+                this.fontSizeEditor = parseInt(savedFontSizeEditor)
             }
 
             if (savedHideTabBar) {

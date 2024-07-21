@@ -11,6 +11,8 @@ html {
         'Droid Sans Fallback';
     --font-default: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light',
         'Ubuntu', 'Droid Sans', sans-serif;
+    --font-size-ui: 13px;
+    --font-size-editor: 13px;
     --default-border-radius: 3px;
     --label-margin-bottom: 0.25rem;
     /* theme colors */
@@ -308,7 +310,7 @@ html.theme-dracula {
 
 body {
     font-family: var(--font-default);
-    font-size: 13px;
+    font-size: var(--font-size-ui);
     background-color: var(--background-color);
     color: var(--text-color);
 }

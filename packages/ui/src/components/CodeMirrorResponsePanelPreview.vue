@@ -70,6 +70,10 @@ export default {
 </script>
 
 <style>
+.code-mirror-response-panel-preview {
+    font-size: var(--font-size-editor);
+}
+
 .code-mirror-response-panel-preview .cm-editor.cm-focused {
     outline: 0 !important;
 }

@@ -20,6 +20,8 @@ export default {
         RESPONSE_PANEL_RATIO: 'Restfox-ResponsePanelRatio',
         REQUEST_RESPONSE_LAYOUT: 'Restfox-RequestResponseLayout',
         THEME: 'Restfox-Theme',
+        FONT_SIZE_UI: 'Restfox-FontSizeUI',
+        FONT_SIZE_EDITOR: 'Restfox-FontSizeEditor',
         GITHUB_STAR_COUNT: 'Restfox-GithubStarCount',
         HIDE_TAB_BAR: 'Restfox-HideTabBar',
         DISABLE_PAGE_VIEW_ANALYTICS_TRACKING: 'Restfox-DisablePageViewAnalyticsTracking',

@@ -394,6 +394,22 @@ export default {
             }
         }
 
+        const savedFontSizeUi = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI)
+        if (savedFontSizeUi) {
+            document.querySelector('html').style.setProperty('--font-size-ui', `${savedFontSizeUi}px`)
+        }
+        window.addEventListener(constants.LOCAL_STORAGE_KEY.FONT_SIZE_UI, (event) => {
+            document.querySelector('html').style.setProperty('--font-size-ui', `${event.detail.fontSizeUi}px`)
+        })
+
+        const savedFontSizeEditor = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR)
+        if (savedFontSizeEditor) {
+            document.querySelector('html').style.setProperty('--font-size-editor', `${savedFontSizeEditor}px`)
+        }
+        window.addEventListener(constants.LOCAL_STORAGE_KEY.FONT_SIZE_EDITOR, (event) => {
+            document.querySelector('html').style.setProperty('--font-size-editor', `${event.detail.fontSizeEditor}px`)
+        })
+
         emitter.on('error', this.handleError)
 
         if(import.meta.env.MODE === 'desktop-electron') {

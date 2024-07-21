@@ -189,6 +189,10 @@ export default {
 </script>
 
 <style>
+.code-mirror-editor {
+    font-size: var(--font-size-editor);
+}
+
 .code-mirror-editor .cm-editor.cm-focused {
     outline: 0 !important;
 }
